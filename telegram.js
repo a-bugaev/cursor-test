@@ -18,6 +18,13 @@ function applyTelegramTheme() {
   root.dataset.telegram = "true";
 }
 
+function applyViewport() {
+  const height = tg?.viewportStableHeight || tg?.viewportHeight;
+  if (height && height > 0) {
+    document.documentElement.style.setProperty("--app-height", `${height}px`);
+  }
+}
+
 export function initTelegram() {
   if (!tg) {
     document.documentElement.dataset.telegram = "false";
@@ -28,8 +35,10 @@ export function initTelegram() {
   tg.expand();
   tg.enableClosingConfirmation();
   applyTelegramTheme();
+  applyViewport();
 
   tg.onEvent("themeChanged", applyTelegramTheme);
+  tg.onEvent("viewportChanged", applyViewport);
 
   return { tg, isTelegram: true };
 }
